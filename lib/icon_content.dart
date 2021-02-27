@@ -9,7 +9,7 @@ class IconContent extends StatelessWidget {
   final String gender;
   final IconData cardIcon;
 
-  IconContent({@required this.gender,@required this.cardIcon}){}
+  IconContent({@required this.gender,@required this.cardIcon});
 
   @override
   Widget build(BuildContext context) {
