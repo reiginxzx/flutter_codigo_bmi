@@ -1,15 +1,16 @@
 
+
+
 import 'package:flutter/material.dart';
+import 'package:flutter_app_bmi/bottom_button.dart';
+import 'package:flutter_app_bmi/calculator_brain.dart';
+import 'package:flutter_app_bmi/result_page.dart';
 import 'package:flutter_app_bmi/reusable_card.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'constants.dart';
 import 'icon_content.dart';
-
-//REUSABLE_CARD CONST
-const activeCardColors = Color(0xff204e84);
-const inactiveCardColors = Color(0xff56738c);
-const bottomContainerColor = Colors.greenAccent;
-const bottomContainerHeight = 80.0;
+import 'round_icon_button.dart';
 
 enum Gender{
   male,
@@ -25,7 +26,9 @@ class InputPage extends StatefulWidget {
 class _InputPageState extends State<InputPage> {
 
   Gender selectedGender;
-
+  int height=160 ;
+  int age=24;
+  int weight=50;
 
   // Color maleCardColor = inactiveCardColors;
   // Color femaleCardColor= inactiveCardColors;
@@ -76,7 +79,7 @@ class _InputPageState extends State<InputPage> {
                       setState(() {
                       });
                     },
-                    color: selectedGender==Gender.male ? activeCardColors :inactiveCardColors,
+                    color: selectedGender==Gender.male ? kActiveCardColors :kInactiveCardColors,
                     childCard: IconContent(
                         gender: "Male",
                         cardIcon: FontAwesomeIcons.mars),
@@ -90,7 +93,7 @@ class _InputPageState extends State<InputPage> {
                       setState(() {
                       });
                     },
-                    color: selectedGender == Gender.female ? activeCardColors : inactiveCardColors,
+                    color: selectedGender == Gender.female ? kActiveCardColors : kInactiveCardColors,
                     childCard: IconContent(gender: "Female", cardIcon: FontAwesomeIcons.venus),
                   ),
                 )
@@ -102,8 +105,37 @@ class _InputPageState extends State<InputPage> {
               children: [
                 Expanded(
                   child: ReusableCard(
-                      color: inactiveCardColors
-                  )
+                    color: kActiveCardColors,
+                    childCard: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "HEIGHT",
+                          style: kLabelTextStyle,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          children: [
+                            Text(height.toString(),style: kNumberTextStyle,),
+                            Text("cm",style: kLabelTextStyle,)
+                          ],
+                        ),
+                        Slider(
+                          value: height.toDouble(),
+                          min: 10,
+                          max: 200,
+                          inactiveColor: Colors.white70,
+                          onChanged: (double value){
+                            height = value.round();
+                            setState(() {
+
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -113,27 +145,121 @@ class _InputPageState extends State<InputPage> {
               children: [
                 Expanded(
                   child: ReusableCard(
-                      color: activeCardColors
+                    color: kActiveCardColors,
+                    childCard: Column(
+                      mainAxisAlignment: MainAxisAlignment.center ,
+                      children: [
+                        Text(
+                          "AGE",
+                          style: kLabelTextStyle,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          children: [
+                            Text(
+                              age.toString(),
+                              style: kNumberTextStyle,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            RoundIconButton(
+                              icon: FontAwesomeIcons.plus,
+                              onPressed: (){
+                                age+=1;
+                                setState(() {
+
+                                });
+                              },
+                            ),
+                            RoundIconButton(
+                              icon: FontAwesomeIcons.minus,
+                              onPressed: (){
+                                age-=1;
+                                setState(() {
+
+                                });
+                              },
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   )
                 ),
                 Expanded(
-                  child: ReusableCard(
-                      color: activeCardColors
-                  )
-                )
+                    child: ReusableCard(
+                      color: kActiveCardColors,
+                      childCard: Column(
+                        mainAxisAlignment: MainAxisAlignment.center ,
+                        children: [
+                          Text(
+                            "WEIGHT",
+                            style: kLabelTextStyle,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.baseline,
+                            children: [
+                              Text(
+                                weight.toString(),
+                                style: kNumberTextStyle,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              RoundIconButton(
+                                icon: FontAwesomeIcons.plus,
+                                onPressed: (){
+                                  weight++;
+                                  setState(() {
+
+                                  });
+                                },
+                              ),
+                              RoundIconButton(
+                                icon: FontAwesomeIcons.minus,
+                                onPressed: (){
+                                  weight--;
+                                  setState(() {
+
+                                  });
+                                },
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    )
+                ),
               ],
             ),
           ),
-          Container(
-            color: bottomContainerColor,
-            height: bottomContainerHeight,
-            width: double.infinity,
-            margin: EdgeInsets.all(15),
+          BottomButton(
+            text: "CALCULATE",
+            onTap: (){
+              CalculatorBrain calc = new CalculatorBrain(height: height,weight: weight);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context)=>ResultPage(
+                    bmiResult: calc.calculateBMI(),
+                    resultText: calc.getResult(),
+                    interpretation: calc.getInterpretation(),
+                  ))
+              );
+            }
           ),
         ],
       ),
     );
   }
 }
+
+
 
 

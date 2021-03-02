@@ -6,7 +6,7 @@ import 'icon_content.dart';
 class ReusableCard extends StatelessWidget {
 
   final Color color;
-  final IconContent childCard;
+  final Widget childCard;
   final Function onPress;
 
   ReusableCard({@required this.color,@required this.childCard,this.onPress});

@@ -17,6 +17,17 @@ class MyApp extends StatelessWidget {
           color: Color(0xff112A47),
         ),
         scaffoldBackgroundColor: Color(0xff112A47),
+        sliderTheme: SliderTheme.of(context).copyWith(
+            activeTrackColor: Colors.greenAccent,
+            thumbColor: Colors.deepPurpleAccent,
+            thumbShape: RoundSliderThumbShape(
+              enabledThumbRadius: 15.0,
+            ),
+            overlayColor: Colors.greenAccent.withOpacity(0.2),
+            overlayShape: RoundSliderOverlayShape(
+              overlayRadius: 25.0,
+            )
+        ),
       ),
       // theme: ThemeData(
       //   primaryColor: Color(0xff00796B),
